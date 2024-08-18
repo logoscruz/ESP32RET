@@ -183,7 +183,6 @@ void CANManager::loop()
                 addBits(i, inFD);
                 displayFrame(inFD, i);
             }
-            toggleRXLED();
             if ( (incoming.id > 0x7DF && incoming.id < 0x7F0) || elmEmulator.getMonitorMode() ) elmEmulator.processCANReply(incoming);
             wifiLength = wifiGVRET.numAvailableBytes();
             serialLength = serialGVRET.numAvailableBytes();

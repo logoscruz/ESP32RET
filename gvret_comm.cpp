@@ -417,7 +417,7 @@ void GVRET_Comm_Handler::processIncomingByte(uint8_t in_byte)
                     //temp8 = checksumCalc(buff, step);
                     //if (temp8 == in_byte)
                     //{
-                    toggleRXLED();
+                    
                     //if(isConnected) {
                     canManager.displayFrame(build_out_frame, 0);
                     //}

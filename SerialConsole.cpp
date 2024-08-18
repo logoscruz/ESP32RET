@@ -511,7 +511,6 @@ bool SerialConsole::handleCANSend(CAN_COMMON &port, char *inputString)
     
     Logger::console("Sending frame with id: 0x%x len: %i", frame.id, frame.length);
     SysSettings.txToggle = !SysSettings.txToggle;
-    setLED(SysSettings.LED_CANTX, SysSettings.txToggle);
     return true;
 }
 

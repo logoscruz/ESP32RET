@@ -31,18 +31,13 @@ by stimmer
 */
 
 #include "sys_io.h"
-#include <FastLED.h>
-
-extern CRGB leds[A5_NUM_LEDS];
 
 bool useRawADC = false;
 
-#undef HID_ENABLED
-
-uint8_t dig[NUM_DIGITAL];   //digital inputs. sudo/analogue inputs
-uint8_t adc[NUM_ANALOG][2]; // [x][0]This holds the ADC Channel number. // This is calculated in sys_early_setup()
-                            // [x][1]This holds the pointer of the ADC number position into the adc_buf[x][x] array (Now redundent).
-                            // This is calculated in sys_early_setup()
+uint8_t dig[NUM_DIGITAL];   //digital inputs. pseudo/analog inputs
+uint8_t adc[NUM_ANALOG][2]; // [x][0] This holds the ADC Channel number.
+// [x][1] This holds the pointer of the ADC number position into the adc_buf[x][x] array (Now redundant).
+// This is calculated in sys_early_setup()
 uint8_t out[NUM_OUTPUT];    //digital output configuration details
 
 uint32_t Enabled_Analogue_Pins = 0; // Sum of ADC input numbers to load into ADC_CHER
@@ -85,11 +80,11 @@ uint16_t getAnalog(uint8_t which)
     if (which >= NUM_ANALOG) which = 0;
     if (adc[which][0] > 15) which = 0;
 
-    return 0;//adc_out_vals[which];
+    return 0; //adc_out_vals[which];
 }
 
 /*
-get value of one of the sudo 6 digital/Analogue inputs 0->(NUM_DIGITAL - 1)
+get value of one of the pseudo 6 digital/Analog inputs 0->(NUM_DIGITAL - 1)
 */
 boolean getDigital(uint8_t which)
 {
@@ -119,45 +114,4 @@ boolean getOutput(uint8_t which)
         return false;
     }
     return digitalRead(out[which]);
-}
-
-void setLED(uint8_t which, boolean hi){
-    if(which == 255){
-        return;
-    }
-    if(hi){
-        digitalWrite(which, HIGH);
-    } else{
-        digitalWrite(which, LOW);
-    }
-}
-
-void toggleRXLED()
-{
-    static int counter = 0;
-    counter++;
-    if (counter >= BLINK_SLOWNESS) {
-        counter = 0;
-        SysSettings.rxToggle = !SysSettings.rxToggle;
-        if (!SysSettings.fancyLED) setLED(SysSettings.LED_CANRX, SysSettings.rxToggle);
-        else
-        {
-          leds[SysSettings.LED_CANRX] = SysSettings.rxToggle?CRGB::Blue:CRGB::Black;
-        };
-    }
-}
-
-void toggleTXLED()
-{
-    static int counter = 0;
-    counter++;
-    if (counter >= BLINK_SLOWNESS) {
-        counter = 0;
-        SysSettings.txToggle = !SysSettings.txToggle;
-        if (!SysSettings.fancyLED) setLED(SysSettings.LED_CANTX, SysSettings.txToggle);
-        else
-        {
-          leds[SysSettings.LED_CANRX] = SysSettings.rxToggle?CRGB::Green:CRGB::Black;
-        };
-    }
 }
